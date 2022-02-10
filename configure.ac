@@ -36,6 +36,14 @@ AS_IF([test "x$has_ncursesw" = "xyes"], [
   AC_SUBST([LIBS])
 ])
 
+PKG_CHECK_MODULES([LIBNL3], [libnl-3.0 libnl-genl-3.0], [has_libnl3=yes],
+    AC_MSG_NOTICE([libnl-3.0 is unavailable so no support for thermal events.])
+)
+AS_IF([test "x$has_libnl3" = "xyes"], [
+  AC_DEFINE([HAVE_THERMAL], 1, [Build irqbalance to support thermal events])
+])
+AM_CONDITIONAL([THERMAL], [test x$has_libnl3 = xyes])
+
 AC_C_CONST
 AC_C_INLINE
 AM_PROG_CC_C_O
